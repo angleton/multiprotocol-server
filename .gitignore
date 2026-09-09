@@ -1,0 +1,13 @@
+# .NET build artifacts
+[Bb]in/
+[Oo]bj/
+*.user
+*.log
+
+# Rust build artifacts (also covered by Rust/.gitignore)
+/Rust/target/
+
+# OS/editor
+.vs/
+.vscode/*
+!.vscode/extensions.json

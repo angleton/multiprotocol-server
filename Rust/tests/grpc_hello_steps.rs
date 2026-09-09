@@ -1,0 +1,53 @@
+use std::time::Duration;
+
+use bdd_rust_multiprotocol_server::hello::{hello_client::HelloClient, HelloRequest};
+use cucumber::{given, then, when, World};
+use tokio::task::JoinHandle;
+
+#[derive(Debug, Default, World)]
+struct GrpcWorld {
+    server_handle: Option<JoinHandle<()>>,
+    response_message: Option<String>,
+}
+
+#[given("the server is running")]
+async fn server_is_running(world: &mut GrpcWorld) {
+    let address = "127.0.0.1:8080".parse().unwrap();
+    let listener = bdd_rust_multiprotocol_server::bind_http(address)
+        .await
+        .expect("Cannot start test server: port 8080 is already in use. Stop the standalone server (`cargo run`) before running BDD tests.");
+    let handle = tokio::spawn(async move {
+        bdd_rust_multiprotocol_server::run_with_listener(address, listener).await;
+    });
+
+    world.server_handle = Some(handle);
+    tokio::time::sleep(Duration::from_millis(500)).await;
+}
+
+#[when(expr = "I call the gRPC hello method with the name {string}")]
+async fn call_grpc_hello(world: &mut GrpcWorld, name: String) {
+    let mut client = HelloClient::connect("http://127.0.0.1:8081")
+        .await
+        .expect("Failed to connect to the gRPC server");
+    let response = client
+        .say_hello(HelloRequest {
+            name,
+            payload: String::new(),
+        })
+        .await
+        .expect("Failed to call the gRPC hello method");
+
+    world.response_message = Some(response.into_inner().message);
+}
+
+#[then(expr = "the gRPC response message should be {string}")]
+async fn grpc_response_should_be(world: &mut GrpcWorld, expected: String) {
+    assert_eq!(world.response_message.as_deref(), Some(expected.as_str()));
+}
+
+#[tokio::test]
+async fn grpc_hello_feature() {
+    GrpcWorld::cucumber()
+        .run("./features/grpc_hello.feature")
+        .await;
+}

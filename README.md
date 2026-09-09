@@ -14,7 +14,8 @@ The Rust implementation is located in the `Rust/src/protocols/fix/mod.rs` file. 
 
 ## C# Implementation
 The `CSharpDotnet` folder contains a .NET 8 port of the Rust server, mirroring the same
-protocols, telemetry, and controlled-workload behavior:
+protocols, telemetry, and controlled-workload behavior. See
+[CSharpDotnet/README.md](CSharpDotnet/README.md) for full details:
 - `CSharpDotnet/src` — the ASP.NET Core server (`MultiprotocolServer.csproj`). REST, GraphQL,
   SOAP, WebSocket, and `/health`/`/telemetry` are hosted over HTTP/1.1 on port 8080; gRPC is
   hosted over cleartext HTTP/2 on port 8081 (same Kestrel process, second endpoint); the FIX

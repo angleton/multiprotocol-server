@@ -90,6 +90,7 @@ async fn soap_response_body_should_contain(world: &mut SoapWorld, expected: Stri
 #[tokio::test]
 async fn soap_acknowledgement_feature() {
     SoapWorld::cucumber()
+        .with_default_cli()
         .run("./features/soap_acknowledgement.feature")
         .await;
 }

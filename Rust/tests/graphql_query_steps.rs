@@ -61,6 +61,7 @@ async fn graphql_response_should_be(world: &mut GraphqlWorld, expected: String) 
 #[tokio::test]
 async fn graphql_query_feature() {
     GraphqlWorld::cucumber()
+        .with_default_cli()
         .run("./features/graphql_query.feature")
         .await;
 }

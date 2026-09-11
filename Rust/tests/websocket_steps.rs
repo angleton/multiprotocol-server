@@ -73,6 +73,7 @@ async fn websocket_response_should_be(world: &mut WebSocketWorld, expected: Stri
 #[tokio::test]
 async fn websocket_message_feature() {
     WebSocketWorld::cucumber()
-        .run_and_exit("./features/websocket_message.feature")
+        .with_default_cli()
+        .run("./features/websocket_message.feature")
         .await;
 }

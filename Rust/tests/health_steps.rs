@@ -39,5 +39,8 @@ async fn response_should_be_ok(world: &mut HealthWorld) {
 
 #[tokio::test]
 async fn health_feature() {
-    HealthWorld::run("features/health.feature").await;
+    HealthWorld::cucumber()
+        .with_default_cli()
+        .run("features/health.feature")
+        .await;
 }

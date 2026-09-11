@@ -144,6 +144,7 @@ async fn telemetry_should_report_requested_load(
 #[tokio::test]
 async fn controlled_workload_feature() {
     ControlledWorkloadWorld::cucumber()
-        .run_and_exit("./features/controlled_workload.feature")
+        .with_default_cli()
+        .run("./features/controlled_workload.feature")
         .await;
 }

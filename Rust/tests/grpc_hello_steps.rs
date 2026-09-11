@@ -48,6 +48,7 @@ async fn grpc_response_should_be(world: &mut GrpcWorld, expected: String) {
 #[tokio::test]
 async fn grpc_hello_feature() {
     GrpcWorld::cucumber()
+        .with_default_cli()
         .run("./features/grpc_hello.feature")
         .await;
 }

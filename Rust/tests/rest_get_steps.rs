@@ -41,5 +41,8 @@ async fn response_body_should_be(world: &mut RestGetWorld, expected: String) {
 
 #[tokio::test]
 async fn rest_get_feature() {
-    RestGetWorld::run("features/rest_get.feature").await;
+    RestGetWorld::cucumber()
+        .with_default_cli()
+        .run("features/rest_get.feature")
+        .await;
 }

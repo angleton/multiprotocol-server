@@ -60,6 +60,7 @@ async fn fix_response_should_contain_message_type(world: &mut FixWorld, message_
 #[tokio::test]
 async fn fix_heartbeat_feature() {
     FixWorld::cucumber()
+        .with_default_cli()
         .run("./features/fix_heartbeat.feature")
         .await;
 }

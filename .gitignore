@@ -10,7 +10,8 @@
 # OS/editor
 .vs/
 .vscode/*
+!.vscode/settings.json
 !.vscode/extensions.json
 
 .fake
-Rust/.vscode/settings.json
+Rust/.vscode/

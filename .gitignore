@@ -13,3 +13,4 @@
 !.vscode/extensions.json
 
 .fake
+Rust/.vscode/settings.json

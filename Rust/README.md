@@ -228,6 +228,20 @@ server applies an approximate duty cycle and reports the requested and observed
 values in telemetry. This is intended to equalize application work, not to
 provide an exact operating-system CPU reservation.
 
+OpenTelemetry metrics are emitted for requests, failures, request duration, and
+request/response bytes. OTLP export is opt-in so local runs and tests do not
+require a collector. Set `OTEL_EXPORTER_OTLP_ENDPOINT` before `cargo run` to
+enable the periodic OTLP metric exporter, for example:
+
+```powershell
+$env:OTEL_EXPORTER_OTLP_ENDPOINT = "http://127.0.0.1:4317"
+cargo run
+```
+
+The `/telemetry` endpoint remains available as a compatibility snapshot for
+local checks and the protocol benchmark; exported OpenTelemetry metrics are
+the integration point for external observability backends.
+
 ## Compare protocol performance
 
 Run the statistically stronger default benchmark:

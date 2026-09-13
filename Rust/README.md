@@ -51,6 +51,19 @@ These technologies are not interchangeable. They make different assumptions abou
 
 In other words, FIX and WebSocket are the most session-oriented; REST, GraphQL, and SOAP are the most request/response oriented; gRPC sits in between as a service RPC model. None of these protocols assume perfectly reliable network quality, but they do encode very different expectations about connectivity and recovery.
 
+### What each protocol emphasizes
+
+These technologies are often grouped together as "web protocols," but they emphasize different communication models:
+
+- gRPC: classic RPC. It is built around named methods, typed request/response contracts, and remote invocation semantics.
+- SOAP: structured XML messaging. It is message-based and contract-driven, often used for formal request/response exchanges.
+- FIX: message-oriented and session-based. It emphasizes ordered financial messages, recovery, heartbeats, and reliability across a persistent trading session rather than resource-oriented APIs.
+- REST: resource-oriented API design. It emphasizes resources, HTTP verbs, status codes, and stateless interaction over a web transport.
+- GraphQL: query execution. It emphasizes asking for a shaped payload from a typed schema, rather than invoking a remote procedure in the classic sense.
+- WebSocket: long-lived bidirectional streaming. It emphasizes a persistent connection for pushing or exchanging data in real time.
+
+This makes the family tree clearer: gRPC is a direct RPC system, REST and GraphQL are resource/query abstractions, SOAP is structured messaging, WebSocket is a stream, and FIX is a session-driven financial messaging protocol. They share the fact that they carry data remotely, but they optimize for different semantics and operational assumptions.
+
 The SOAP handler deliberately models the older XML contract: it parses the envelope, body, and operation instead of accepting arbitrary text. Invalid SOAP-shaped input receives HTTP `400`; valid requests receive `text/xml`.
 
 Useful manual checks while debugging:

@@ -39,6 +39,18 @@ In short, this is a multiprotocol application server supporting REST, GraphQL, S
 | SOAP | `POST /soap` with a SOAP XML `Envelope` and `PingRequest` body | XML `Envelope` containing `SOAP message` |
 | WebSocket | Text message to `ws://127.0.0.1:8080/ws` | Text message `WebSocket message` |
 
+## Protocol assumptions and reliability models
+
+These technologies are not interchangeable. They make different assumptions about connectivity, session lifetime, and how they recover from poor network conditions:
+
+- FIX: a financial messaging protocol designed for persistent sessions with strict sequencing and heartbeat checks. In production it assumes imperfect links and includes explicit recovery rules for stale sessions, missed messages, and reconnects; the protocol is built around operational reliability, not a "perfect network" model.
+- WebSocket: a long-lived bidirectional connection for persistent conversations. It is the most "always-on" protocol in this set, but it still depends on reconnect logic, ping/pong checks, and application-level resilience when the network is flaky.
+- gRPC: a service-oriented RPC framework over HTTP/2. It assumes a reasonably healthy network and relies on deadlines, retries, and connection management rather than long-lived session semantics.
+- REST and GraphQL: request/response protocols designed around short-lived HTTP interactions. They fit stateless APIs and ordinary internet failure modes, rather than persistent session continuity.
+- SOAP: an XML-based request/response protocol usually carried over HTTP. It is structured and standards-driven, but it is not designed around always-on sessions.
+
+In other words, FIX and WebSocket are the most session-oriented; REST, GraphQL, and SOAP are the most request/response oriented; gRPC sits in between as a service RPC model. None of these protocols assume perfectly reliable network quality, but they do encode very different expectations about connectivity and recovery.
+
 The SOAP handler deliberately models the older XML contract: it parses the envelope, body, and operation instead of accepting arbitrary text. Invalid SOAP-shaped input receives HTTP `400`; valid requests receive `text/xml`.
 
 Useful manual checks while debugging:

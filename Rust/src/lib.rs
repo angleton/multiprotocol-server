@@ -8,6 +8,11 @@ mod workload;
 
 pub use telemetry::{ProtocolSnapshot, Telemetry, TelemetrySnapshot};
 
+pub fn init_telemetry_provider(
+) -> anyhow::Result<Option<opentelemetry_sdk::metrics::SdkMeterProvider>> {
+    telemetry::init_telemetry_provider()
+}
+
 pub mod hello {
     tonic::include_proto!("hello");
 }

@@ -12,34 +12,6 @@ The Rust implementation is located in the `Rust/src/protocols/fix/mod.rs` file. 
 - `reject_message`: Constructs a response for unsupported messages.
 - `build_message`: Builds a complete FIX message including a checksum.
 
-## C# Implementation
-The `CSharpDotnet` folder contains a .NET 8 port of the Rust server, mirroring the same
-protocols, telemetry, and controlled-workload behavior. See
-[CSharpDotnet/README.md](CSharpDotnet/README.md) for full details:
-- `CSharpDotnet/src` — the ASP.NET Core server (`MultiprotocolServer.csproj`). REST, GraphQL,
-  SOAP, WebSocket, and `/health`/`/telemetry` are hosted over HTTP/1.1 on port 8080; gRPC is
-  hosted over cleartext HTTP/2 on port 8081 (same Kestrel process, second endpoint); the FIX
-  acceptor runs as a raw `TcpListener` background service on port 8082.
-- `CSharpDotnet/features` — the same Gherkin `.feature` files as the Rust project.
-- `CSharpDotnet/tests` — a Reqnroll (SpecFlow successor) + xUnit BDD test project
-  (`MultiprotocolServer.Tests.csproj`) with step definitions equivalent to the Rust
-  `cucumber` step files.
-
-To build and test:
-
-```bash
-cd CSharpDotnet
-dotnet build MultiprotocolServer.sln
-dotnet test tests/MultiprotocolServer.Tests.csproj
-```
-
-To run the standalone server:
-
-```bash
-cd CSharpDotnet/src
-dotnet run
-```
-
 ## Setup
 To set up the Rust server, ensure you have Rust and Cargo installed. Clone the repository and navigate to the `Rust` directory. Use the following command to run the server:
 
